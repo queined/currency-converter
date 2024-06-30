@@ -5,18 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import interfaces.Convertible;
+import interfaces.Visible;
 
-public class Currency implements Convertible {
+public class Currency implements Visible {
     private double amount;
     private String currencyCode;
     private String currencyName;
-    private static ArrayList<Convertible> list = new ArrayList<>();
-
-    public Currency(double amount, String currencyCode) {
-        this.amount = amount;
-        this.currencyCode = currencyCode;
-    }
+    private static ArrayList<Visible> list = new ArrayList<>();
 
     public Currency(String currencyCode, String currencyName) {
         this.currencyCode = currencyCode;
@@ -27,6 +22,14 @@ public class Currency implements Convertible {
     public Currency(String currencyCode){
         this.currencyCode = currencyCode;
         this.amount = 0;
+    }
+
+    public double getAmount(){
+        return amount;
+    }
+
+    public String getCurrencyCode(){
+        return currencyCode;
     }
 
     public void setAmount(double amount){
@@ -43,14 +46,6 @@ public class Currency implements Convertible {
         }
     }
 
-    public double getAmount(){
-        return amount;
-    }
-
-    public String getCurrencyCode(){
-        return currencyCode;
-    }
-
     public void convertCurrency(Currency to) throws IOException, InterruptedException{
         Converter converter = new Converter();
         converter.convertCurrency(this, to);
@@ -63,7 +58,7 @@ public class Currency implements Convertible {
             return currencyCode + " - " + currencyName;
         }}
     
-    public static ArrayList<Convertible> getConvertible(){
+    public static ArrayList<Visible> getConvertible(){
         list = new ArrayList<>(Arrays.asList(
             new Currency("USD", "Dólar Estadounidense"),
             new Currency("EUR", "Euro"),
@@ -72,9 +67,7 @@ public class Currency implements Convertible {
             new Currency("ARS", "Peso Argentino"),
             new Currency("JPY", "Yen Japonés"),
             new Currency("CAD", "Dólar Canadiense"),
-            new Currency("GBP", "Libra Esterlina")
-        ));
-        
+            new Currency("GBP", "Libra Esterlina")));
         return list;
     }
 

@@ -1,65 +1,43 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
-import interfaces.Convertible;
+import interfaces.Visible;
 
 public class Sesion {
     private boolean isActive;
-    private ArrayList<Convertible> list;
+    private ArrayList<Visible> currencyList;
     private Scanner scanner;
+    private ArrayList<History> historyList;
 
-    public Sesion(boolean isActive, ArrayList<Convertible> list, Scanner scanner) {
+    public Sesion(boolean isActive, ArrayList<Visible> currencyList, Scanner scanner) {
         this.isActive = isActive;
-        this.list = list;
+        this.currencyList = currencyList;
         this.scanner = scanner;
+        this.historyList = new ArrayList<>();
     }
 
-    public boolean isActive(){
-        return isActive;
-    }
-
-    public void cleanConsole(){
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    public void menu(){
-        System.out.println("-".repeat(42));
-        System.out.println("Seleccione una opción");
-        System.out.println("1. Iniciar");
-        System.out.println("2. Salir");
-        
-        Integer input = isValid(String.valueOf(scanner.nextLine()));
-        if (input != null){
-        if (input == 1) {
-            cleanConsole();
-        } else if(input == 2) {
-            System.out.println("¡Vuelve pronto! :)");
-            isActive = false;
-        } else {
-            cleanConsole();
-            System.out.println("Digite una opción válida");
-            menu();
-        }} else {
-            cleanConsole();
-            System.out.println("Digite una opción válida");
-            menu();
-        }
-    }
-
-    public Scanner getScanner(){
+    public Scanner getScanner() {
         return scanner;
     }
 
-    private void printCurrencies(){
-        Convertible currency;
-        for (int i = 0; i < list.size(); i++) {
-            currency = list.get(i);
-            System.out.println(i+1 + ". " + currency.showCurrency());}
-        System.out.println("9. Otra moneda");
-        System.out.println("0. Ingrese 0 para salir");
+    public boolean isActive() {
+        return isActive;
+    }
+
+    private void exitSesion() {
+        isActive = false;
+    }
+
+    private void lineConsole() {
+        System.out.println("-".repeat(50));
+    }
+
+    public void cleanConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     private Integer isValid(String input) {
@@ -69,11 +47,77 @@ public class Sesion {
         return null;
     }
 
-    private Currency anotherCurrency(Scanner scanner){
+    private void printHistory() {
+        if (historyList.size() > 0) {
+            historyList.forEach(System.out::println);
+        } else {
+            System.out.println("No hay conversiones realizadas.");
+        }
+    }
+
+    public void printResult(Currency to, Currency from) {
+        cleanConsole();
+        historyList.add(new History(to, from));
+        System.out.println("[✓] Resultado: " + from + " -> " + to);
+    }
+
+    private void printOptions() {
+        ArrayList<String> option = new ArrayList<>(Arrays.asList(
+                "[1] Iniciar conversión",
+                "[2] Ver historial",
+                "[3] Salir de la app"));
+        lineConsole();
+        option.forEach(System.out::println);
+        lineConsole();
+    }
+
+    public void showMenu() {
+        boolean continueMenu = true;
+
+        while (continueMenu) {
+            printOptions();
+            Integer input = isValid(String.valueOf(scanner.nextLine()));
+            cleanConsole();
+
+            if (input == null || (input < 1 || input > 3)) {
+                System.out.println("Digite una opción válida.");
+                continue;
+            }
+
+            switch (input) {
+                case 1:
+                    continueMenu = false;
+                    break;
+                case 2:
+                    System.out.println("Historial de conversiones");
+                    lineConsole();
+                    printHistory();
+                    break;
+                case 3:
+                    System.out.println("¡Vuelve pronto! :)");
+                    continueMenu = false;
+                    exitSesion();
+                    return;
+            }
+        }
+    }
+
+    private void printCurrencies() {
+        Visible currency;
+        for (int i = 0; i < currencyList.size(); i++) {
+            currency = currencyList.get(i);
+            System.out.println("[" + (i + 1) + "] " + currency.showCurrency());
+        }
+        System.out.println("[9] Otra moneda");
+        System.out.println("[0] Ingrese 0 para salir");
+        lineConsole();
+    }
+
+    private Currency anotherCurrency(Scanner scanner) {
         System.out.println("Digite el código de la moneda en formato ISO 4217: ");
         String currencyCode = String.valueOf(scanner.nextLine());
 
-        if (currencyCode.matches("^[a-zA-Z]{3}$")){
+        if (currencyCode.matches("^[a-zA-Z]{3}$")) {
             return new Currency(currencyCode.toUpperCase());
         }
         cleanConsole();
@@ -81,13 +125,14 @@ public class Sesion {
         return anotherCurrency(scanner);
     }
 
-    public Convertible selectCurrency(String text){
+    public Visible selectCurrency(String text) {
         Integer item;
         String input;
-       
+
         cleanConsole();
         System.out.println(text);
-        System.out.println("-".repeat(42));
+        lineConsole();
+
         printCurrencies();
 
         input = scanner.nextLine();
@@ -95,19 +140,18 @@ public class Sesion {
 
         if (item != null) {
             if (item == 0) {
-                isActive = false;
+                exitSesion();
                 throw new IndexOutOfBoundsException();
-            } else if (item >= 1 && item <= list.size()) {
-                Convertible currency = list.get(item - 1);
+            } else if (item >= 1 && item <= currencyList.size()) {
+                Visible currency = currencyList.get(item - 1);
                 cleanConsole();
                 return currency;
             } else if (item == 9) {
                 cleanConsole();
-                Convertible currency = anotherCurrency(scanner);
+                Visible currency = anotherCurrency(scanner);
                 return currency;
             }
         }
         return selectCurrency("Por favor, digite una opción válida.");
     }
-    }
-
+}

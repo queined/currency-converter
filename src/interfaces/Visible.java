@@ -1,5 +1,5 @@
 package interfaces;
 
-public interface Convertible {
+public interface Visible {
     public String showCurrency();
 }
