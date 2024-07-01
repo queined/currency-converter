@@ -20,11 +20,11 @@ Clona el repositorio usando:
 $ git clone https://github.com/queined/currency-converter.git
 ```
 
-Obtén una API key desde [API Exchange Rate](https://www.exchangerate-api.com/). Luego, crea un archivo llamado `.env` en tu espacio de trabajo y añade la siguiente línea:
+Obtén una API key desde [Exchange Rate API](https://www.exchangerate-api.com/). Luego, crea un archivo llamado `.env` en tu espacio de trabajo y añade la siguiente línea:
 ```bash
 API_KEY=TU_API_KEY
 ```
-Remplaza "TU_API_KEY" por la API key proporcionada.
+Remplaza `TU_API_KEY` por la API key proporcionada.
 
 ## 💰 Ejecución
 
@@ -37,11 +37,10 @@ Abre VS Code y ejecuta App.java. En la consola, se abrirá una interfaz intuitiv
 Si deseas convertir otra moneda, simplemente especifica su código de divisa en formato [ISO 4217](https://es.wikipedia.org/wiki/ISO_4217). 
 
 <p align="center">
-    <img src="https://i.postimg.cc/gjH2f1fC/code.gif" width="350">
+    <img src="https://i.postimg.cc/dtwT6cXm/demo.gif" width="350">
 </p>
 
 Puedes ver el historial con la fecha de las conversiones que realizaste. No te preocupes si cometes errores al digitar, la app posee un buen manejo de ellos.
-
 
 ## 📜 Licencia
 Este proyecto tiene la licencia MIT; consulte el archivo de [LICENSE](https://github.com/queined/currency-converter/blob/main/LICENSE) para obtener más detalles.
