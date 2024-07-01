@@ -32,7 +32,7 @@ public class Sesion {
     }
 
     private void lineConsole() {
-        System.out.println("-".repeat(50));
+        System.out.println("-".repeat(60));
     }
 
     public void cleanConsole() {

@@ -43,7 +43,7 @@ public class Converter {
         JsonObject jsonObject = gson.fromJson(response.body(), JsonObject.class);
 
         if (jsonObject.get("result").getAsString().equals("error")) {
-            System.out.println("[X] Error en la conversión. Digitó un código de moneda no válido.");
+            System.out.println("[X] Error en la conversión. Código de moneda no válido.");
         }
 
         if (jsonObject.get("result").getAsString().equals("success")) {
