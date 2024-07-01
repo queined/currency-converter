@@ -1,4 +1,9 @@
 # currency-converter
+
+<p align="center">
+    <img src="https://i.postimg.cc/qBQHgWPZ/Badge-Conversor.png" width="150">
+</p>
+
 Esta aplicación presenta una implementación de la [Exchange Rate API](https://www.exchangerate-api.com/). Ofrece un intuitivo servicio de conversión de monedas desde la consola.
 
 > [!NOTE]
